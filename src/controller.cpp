@@ -58,4 +58,5 @@ bool Controller::HandleInput(bool &running, Snake &snake) const
       }
     }
   }
+  return false;
 }
