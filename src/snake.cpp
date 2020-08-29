@@ -59,7 +59,6 @@ void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell)
   }
   else if (growthRate > 0)
   {
-    std::cout << "growthRate: " << growthRate << "\n";
     for (int i = 1; i < this->growthRate; i++)
     {
       if (body.size() > 0)
@@ -70,7 +69,6 @@ void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell)
   }
   else
   {
-    std::cout << "growthRate: " << growthRate << "\n";
     growthRate *= -1;
     for (int i = 0; i <= this->growthRate; i++)
     {
@@ -83,7 +81,6 @@ void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell)
 
   growing = false;
   size = body.size();
-  std::cout << "size: " << size << "\n";
   // Check if the snake has died.
   for (auto const &item : body)
   {
@@ -97,7 +94,6 @@ void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell)
 void Snake::GrowBody(int newGrowthRate)
 {
   growing = true;
-  std::cout << "NEW GROWTH: " << newGrowthRate << "\n";
 
   this->growthRate = newGrowthRate;
 }
