@@ -41,6 +41,7 @@ int ReadHighScore()
   {
     return 0;
   }
+  return 0;
 }
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
@@ -136,7 +137,6 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 void Game::PlaceFood()
 {
   this->food = foods[random_food(engine)];
-  std::cout << "GROWTH of selected food: " << food->growthRate << "\n";
 
   int x, y;
   while (true)
