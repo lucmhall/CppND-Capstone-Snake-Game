@@ -2,16 +2,55 @@
 #include <iostream>
 #include "SDL.h"
 #include <vector>
+#include <future>
+#include <fstream>
+
+void WriteHighScore(int score)
+{
+  std::string file_name = "./highscore.txt";
+  try
+  {
+
+    std::ofstream file;
+    file.open(file_name);
+
+    file << std::to_string(score) << std::endl;
+
+    file.close();
+  }
+  catch (int e)
+  {
+  }
+}
+
+int ReadHighScore()
+{
+  std::string file_name = "./highscore.txt";
+  try
+  {
+
+    std::ifstream stream(file_name);
+    std::string line;
+    std::getline(stream, line);
+    if (!line.empty())
+    {
+      return std::stoi(line);
+    }
+  }
+  catch (int e)
+  {
+    return 0;
+  }
+}
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake(grid_width, grid_height),
       engine(dev()),
       random_w(0, static_cast<int>(grid_width) - 1),
       random_h(0, static_cast<int>(grid_height) - 1),
-      random_food(0, 4)
+      random_food(0, 5)
 {
-  foods = {FriendlyFood(), Food(), Food(), Food(), SpeedyFood()};
-  // foods = {Food(), Food(), Food()};
+  foods = {FriendlyFood(), Food(), Food(), Food(), Food(), SpeedyFood()};
 
   PlaceFood();
 }
@@ -26,6 +65,10 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   int frame_count = 0;
   bool running = true;
 
+  std::future<int> scoreftr = std::async(ReadHighScore);
+
+  highScore = scoreftr.get();
+
   while (running)
   {
     frame_start = SDL_GetTicks();
@@ -35,11 +78,14 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     if (gameNeedsReset)
     {
       snake.Reset();
+      score = 0;
       PlaceFood();
+
+      hasWrittenHighScore = false;
     }
 
     Update();
-    renderer.Render(snake, food);
+    renderer.Render(snake, food, highScore);
 
     frame_end = SDL_GetTicks();
 
@@ -54,10 +100,21 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       // After every second, update the window title.
       if (frame_end - title_timestamp >= 1000)
       {
-        renderer.UpdateWindowTitle(score, frame_count);
+        renderer.UpdateWindowTitle(score, highScore, frame_count);
         frame_count = 0;
         title_timestamp = frame_end;
       }
+    }
+    else if (!hasWrittenHighScore)
+    {
+      if (score > highScore)
+      {
+
+        std::thread t = std::thread(WriteHighScore, score);
+        highScore = score;
+        t.join();
+      }
+      hasWrittenHighScore = true;
     }
 
     // If the time for this frame is too small (i.e. frame_duration is

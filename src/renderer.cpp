@@ -44,11 +44,11 @@ Renderer::~Renderer()
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, Food &food)
+void Renderer::Render(Snake const snake, Food &food, int const highScore)
 {
   if (!snake.alive)
   {
-    std::string title{"Press enter to restart."};
+    std::string title{"Press enter to restart. High Score: " + std::to_string(highScore)};
     SDL_SetWindowTitle(sdl_window, title.c_str());
   }
   else
@@ -95,8 +95,8 @@ void Renderer::Render(Snake const snake, Food &food)
   SDL_RenderPresent(sdl_renderer);
 }
 
-void Renderer::UpdateWindowTitle(int score, int fps)
+void Renderer::UpdateWindowTitle(int score, int highScore, int fps)
 {
-  std::string title{"Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps)};
+  std::string title{"Snake Score: " + std::to_string(score) + " High Score: " + std::to_string(highScore) + " FPS: " + std::to_string(fps)};
   SDL_SetWindowTitle(sdl_window, title.c_str());
 }

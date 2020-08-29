@@ -16,6 +16,8 @@ public:
            std::size_t target_frame_duration);
   int GetScore() const;
   int GetSize() const;
+  int highScore = 0;
+  bool hasWrittenHighScore = false;
 
 private:
   Snake snake;
