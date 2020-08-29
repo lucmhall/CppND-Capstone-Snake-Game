@@ -11,7 +11,7 @@ void Controller::ChangeDirection(Snake &snake, Snake::Direction input,
   return;
 }
 
-void Controller::HandleInput(bool &running, Snake &snake) const
+bool Controller::HandleInput(bool &running, Snake &snake) const
 {
   SDL_Event e;
   while (SDL_PollEvent(&e))
@@ -26,7 +26,9 @@ void Controller::HandleInput(bool &running, Snake &snake) const
       {
       case SDLK_RETURN:
       case SDLK_KP_ENTER:
-        snake.Reset();
+        // return true to reset game
+        // I know this could be more sophisticated but this works for now.
+        return true;
         break;
       }
     }
