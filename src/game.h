@@ -21,8 +21,8 @@ public:
 
 private:
   Snake snake;
-  Food food;
-  std::vector<Food> foods;
+  std::shared_ptr<Food> food;
+  std::vector<std::shared_ptr<Food>> foods;
   std::random_device dev;
   std::mt19937 engine;
   std::uniform_int_distribution<int> random_w;

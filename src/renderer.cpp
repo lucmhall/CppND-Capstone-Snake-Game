@@ -44,7 +44,7 @@ Renderer::~Renderer()
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, Food &food, int const highScore)
+void Renderer::Render(Snake const snake, std::shared_ptr<Food> food, int const highScore)
 {
   if (!snake.alive)
   {
@@ -63,9 +63,9 @@ void Renderer::Render(Snake const snake, Food &food, int const highScore)
     SDL_RenderClear(sdl_renderer);
 
     // Render food
-    SDL_SetRenderDrawColor(sdl_renderer, food.red, food.green, food.blue, food.alpha);
-    block.x = food.x * block.w;
-    block.y = food.y * block.h;
+    SDL_SetRenderDrawColor(sdl_renderer, food->red, food->green, food->blue, food->alpha);
+    block.x = food->x * block.w;
+    block.y = food->y * block.h;
     SDL_RenderFillRect(sdl_renderer, &block);
 
     // Render snake's body

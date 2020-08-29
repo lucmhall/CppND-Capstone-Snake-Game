@@ -12,7 +12,7 @@ public:
            const std::size_t grid_width, const std::size_t grid_height);
   ~Renderer();
 
-  void Render(Snake const snake, Food &food, int const highScore);
+  void Render(Snake const snake, std::shared_ptr<Food> food, int const highScore);
   void UpdateWindowTitle(int score, int highScore, int fps);
 
 private:
